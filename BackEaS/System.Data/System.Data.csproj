@@ -6,4 +6,17 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Mapping\Sales\" />
+      <Folder Include="Mapping\Users\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\System.Entity\System.Entity.csproj" />
+    </ItemGroup>
+
 </Project>
