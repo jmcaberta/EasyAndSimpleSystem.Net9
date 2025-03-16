@@ -1,0 +1,15 @@
+/Users/mcaberta/Documents/Easy&Simple/BackEaS/System_Entity/bin/Debug/net9.0/System_Entity.deps.json
+/Users/mcaberta/Documents/Easy&Simple/BackEaS/System_Entity/bin/Debug/net9.0/System_Entity.runtimeconfig.json
+/Users/mcaberta/Documents/Easy&Simple/BackEaS/System_Entity/bin/Debug/net9.0/System_Entity.dll
+/Users/mcaberta/Documents/Easy&Simple/BackEaS/System_Entity/bin/Debug/net9.0/System_Entity.pdb
+/Users/mcaberta/Documents/Easy&Simple/BackEaS/System_Entity/obj/Debug/net9.0/System_Entity.csproj.AssemblyReference.cache
+/Users/mcaberta/Documents/Easy&Simple/BackEaS/System_Entity/obj/Debug/net9.0/System_Entity.GeneratedMSBuildEditorConfig.editorconfig
+/Users/mcaberta/Documents/Easy&Simple/BackEaS/System_Entity/obj/Debug/net9.0/System_Entity.AssemblyInfoInputs.cache
+/Users/mcaberta/Documents/Easy&Simple/BackEaS/System_Entity/obj/Debug/net9.0/System_Entity.AssemblyInfo.cs
+/Users/mcaberta/Documents/Easy&Simple/BackEaS/System_Entity/obj/Debug/net9.0/System_Entity.csproj.CoreCompileInputs.cache
+/Users/mcaberta/Documents/Easy&Simple/BackEaS/System_Entity/obj/Debug/net9.0/System_Entity.sourcelink.json
+/Users/mcaberta/Documents/Easy&Simple/BackEaS/System_Entity/obj/Debug/net9.0/System_Entity.dll
+/Users/mcaberta/Documents/Easy&Simple/BackEaS/System_Entity/obj/Debug/net9.0/refint/System_Entity.dll
+/Users/mcaberta/Documents/Easy&Simple/BackEaS/System_Entity/obj/Debug/net9.0/System_Entity.pdb
+/Users/mcaberta/Documents/Easy&Simple/BackEaS/System_Entity/obj/Debug/net9.0/System_Entity.genruntimeconfig.cache
+/Users/mcaberta/Documents/Easy&Simple/BackEaS/System_Entity/obj/Debug/net9.0/ref/System_Entity.dll
