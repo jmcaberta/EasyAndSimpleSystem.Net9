@@ -49,52 +49,71 @@ namespace System.Web.Controllers
                 IsActive = category.IsActive
             });
         }
-        // Put: api/Categories/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCategory([FromRoute] int id, [FromBody] Category category)
+        // Put: api/Categories/Update
+        [HttpPut("[action]")]
+        public async Task<IActionResult> Update([FromBody] CategoryViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != category.CatId)
+            if (model.CategoryId < 0)
             {
                 return BadRequest();
             }
 
-            _context.Entry(category).State = EntityState.Modified;
+            var category = await _context.Categories.FirstOrDefaultAsync(c => c.CatId == model.CategoryId);
+
+            if (category == null)
+            {
+                return NotFound();
+            }
+            
+            category.CatName = model.CategoryName;
+            category.CatDescription = model.CategoryDescription;
 
             try
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!CategoryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                // Save Exeption
+                return BadRequest();
             }
-            return NoContent();
+            return Ok();
         }
-        // Post: api/Categories
-        [HttpPost]
-        public async Task<IActionResult> PostCategory([FromBody] Category category)
+        
+        // Post: api/Categories/Create
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Create([FromBody] CreateViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            _context.Categories.Add(category);
-            await _context.SaveChangesAsync();
+
+            Category category = new Category
+            {
+                CatName = model.CategoryName,
+                CatDescription = model.CategoryDescription,
+                IsActive = true
+            };
             
-            return CreatedAtAction("GetCategory", new { id = category.CatId }, category);
+            _context.Categories.Add(category);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+            
+            return Ok();
         }
+        
         // Delete: api/Category/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory([FromRoute] int id)
