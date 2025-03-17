@@ -35,16 +35,19 @@ namespace System.Web.Controllers
         [HttpGet("{action}/{id}")]
         public async Task<IActionResult> Show([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
             var category = await _context.Categories.FindAsync(id);
+            
             if (category == null)
             {
                 return NotFound();
             }
-            return Ok(category);
+            return Ok(new CategoryViewModel
+            {
+                CategoryId = category.CatId,
+                CategoryName = category.CatName,
+                CategoryDescription = category.CatDescription,
+                IsActive = category.IsActive
+            });
         }
         // Put: api/Categories/5
         [HttpPut("{id}")]
