@@ -1,5 +1,6 @@
 using System.Data;
 using System.Entity.Storedepot;
+using System.Web.Models.Storedepot.Category;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,15 +18,22 @@ namespace System.Web.Controllers
         {
             _context = context;
         }
-        // Get: api/Category
-        [HttpGet]
-        public IEnumerable<Category> GetCategories()
+        // Get: api/Category/Listing
+        [HttpGet("{action}")]
+        public async Task <IEnumerable<CategoryViewModel>> Listing()
         {
-            return _context.Categories;
+            var category = await _context.Categories.ToListAsync();
+            return category.Select(c => new CategoryViewModel
+            {
+                CategoryId = c.CatId,
+                CategoryName = c.CatName,
+                CategoryDescription = c.CatDescription,
+                IsActive = c.IsActive,
+            });
         }
-        // Get: api/Categories/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetCategory([FromRoute] int id)
+        // Get: api/Categories/Show/1
+        [HttpGet("{action}/{id}")]
+        public async Task<IActionResult> Show([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
