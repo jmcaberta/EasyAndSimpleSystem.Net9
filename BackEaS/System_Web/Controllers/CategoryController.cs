@@ -142,8 +142,8 @@ namespace System.Web.Controllers
             return NoContent();
         }
         
-        // Put: api/Category/SetActivateStatus/1
-        [HttpPost("[action]/{id}")]
+        // PUT /api/Categories/SetActivateStatus/{id}?isActive=true
+        [HttpPut("SetActivateStatus/{id}")]
         public async Task<ActionResult> SetActivateStatus([FromRoute] int id, [FromQuery] bool isActive)
         {
             if (id <= 0)
