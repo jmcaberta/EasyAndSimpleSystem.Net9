@@ -3,7 +3,7 @@
     <v-app-bar title="Easy&Simple"></v-app-bar>
 
     <v-navigation-drawer expand-on-hover rail>
-      <v-list>
+      <v-list color="primary">
         <v-list-item 
         title="Juan Miguel Caberta" 
         prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
@@ -11,12 +11,19 @@
         </v-list-item>
         <v-divider></v-divider>
         <v-list density="compact" nav>
-          <v-list-item prepend-icon="mdi-home-city" title="Home" value="home">
-            
+          <v-list-item prepend-icon="mdi-home-city" title="Home" value="home" color="primary" variant="text">        
           </v-list-item> 
-          <v-list-item prepend-icon="mdi-account-group-outline" title="Users" value="users"></v-list-item>         
-        </v-list>
-        
+          <v-list-item prepend-icon="mdi-account-group-outline" title="Users" value="users" color="primary" variant="text"></v-list-item>         
+        </v-list>     
+              
+        <v-list-group prepend-icon="mdi-storefront" value="store" color="primary">
+          <template v-slot:activator="{ props }">
+            <v-list-item v-bind="props" title="Store" color="primary" variant="text"></v-list-item>
+          </template>
+          <v-list-item title="Products" prepend-icon="mdi-package-variant-closed" color="primary" variant="text"></v-list-item>
+          <v-list-item title="Sells" prepend-icon="mdi-cash-register" color="primary" variant="text"></v-list-item>
+          <v-list-item title="Inventory" prepend-icon="mdi-clipboard-list" color="primary" variant="text"></v-list-item>
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
     
