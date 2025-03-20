@@ -11,18 +11,18 @@
         </v-list-item>
         <v-divider></v-divider>
         <v-list density="compact" nav>
-          <v-list-item prepend-icon="mdi-home-city" title="Home" value="home" color="primary" variant="text">        
+          <v-list-item color="primary" prepend-icon="mdi-home-city" title="Home" value="home"  variant="text" style="color: var(--v-theme-primary);">        
           </v-list-item> 
-          <v-list-item prepend-icon="mdi-account-group-outline" title="Users" value="users" color="primary" variant="text"></v-list-item>         
+          <v-list-item prepend-icon="mdi-account-group-outline" title="Users" value="users" color="primary" variant="text" style="color: var(--v-theme-primary);"></v-list-item>         
         </v-list>     
               
-        <v-list-group prepend-icon="mdi-storefront" value="store" color="primary">
+        <v-list-group prepend-icon="mdi-storefront" value="store" color="primary" style="color: var(--v-theme-primary);">
           <template v-slot:activator="{ props }">
-            <v-list-item v-bind="props" title="Store" color="primary" variant="text"></v-list-item>
+            <v-list-item v-bind="props" title="Store" color="primary" variant="text" style="color: var(--v-theme-primary);"></v-list-item>
           </template>
-          <v-list-item title="Products" prepend-icon="mdi-package-variant-closed" color="primary" variant="text"></v-list-item>
-          <v-list-item title="Sells" prepend-icon="mdi-cash-register" color="primary" variant="text"></v-list-item>
-          <v-list-item title="Inventory" prepend-icon="mdi-clipboard-list" color="primary" variant="text"></v-list-item>
+          <v-list-item title="Products" prepend-icon="mdi-package-variant-closed" color="primary" variant="text" style="color: var(--v-theme-primary);"></v-list-item>
+          <v-list-item title="Sells" prepend-icon="mdi-cash-register" color="primary" variant="text" style="color: var(--v-theme-primary);"></v-list-item>
+          <v-list-item title="Inventory" prepend-icon="mdi-clipboard-list" color="primary" variant="text" style="color: var(--v-theme-primary);"></v-list-item>
         </v-list-group>
       </v-list>
     </v-navigation-drawer>
@@ -51,15 +51,16 @@
   <v-divider></v-divider>
   <v-footer class="d-flex flex-column" rounded="lg">
     <div class="d-flex w-90 align-center px-4 py-2">
-      <strong>Get connected with us on social networks!</strong>
+      <strong> Caberta Ramirez </strong>
 
       <div class="d-flex ga-2 ms-auto">
         <v-btn
           v-for="icon in icons"
           :key="icon"
           :icon="icon"
-          size="small"
+          size="medium"
           variant="plain"
+          style="color: var(--v-theme-primary);"
         ></v-btn>
       </div>
     </div>

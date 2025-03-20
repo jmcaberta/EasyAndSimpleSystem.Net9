@@ -17,10 +17,10 @@ export default createVuetify(
         customTheme: {
           dark: false,
           colors: {
-            primary: '#005792', // Azul Profundo - Confianza y Profesionalismo
-            secondary: '#F4A261', // Naranja Suave - Complementario sin distracción
-            accent: '#2A9D8F', // Verde Agua - Moderno y fresco
-            error: '#E63946', // Rojo Coral - Advertencias menos agresivas
+            primary: '#227a18', 
+            secondary: '#F4A261', 
+            accent: '#2A9D8F', 
+            error: '#E63946', 
             info: '#2196f3',
             success: '#4caf50',
             warning: '#ffc107'
