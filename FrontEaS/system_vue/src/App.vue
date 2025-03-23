@@ -13,9 +13,15 @@
         <v-list density="compact" nav>
           <v-list-item color="primary" prepend-icon="mdi-home-city" title="Home" value="home"  variant="text" style="color: var(--v-theme-primary);">        
           </v-list-item> 
-          <v-list-item prepend-icon="mdi-account-group-outline" title="Users" value="users" color="primary" variant="text" style="color: var(--v-theme-primary);"></v-list-item>         
+                  
         </v-list>     
-              
+        <v-list-group prepend-icon="mdi-fingerprint" value="access" color="primary" style="color: var(--v-theme-primary);">
+          <template v-slot:activator="{ props }">
+            <v-list-item v-bind="props" title="Access" color="primary" variant="text" style="color: var(--v-theme-primary);"></v-list-item>
+          </template>
+          <v-list-item prepend-icon="mdi-account-group-outline" title="Users" value="users" color="primary" variant="text" style="color: var(--v-theme-primary);"></v-list-item>
+          <v-list-item title="Rolls" prepend-icon="mdi-account-convert" color="primary" variant="text" style="color: var(--v-theme-primary);"></v-list-item>          
+        </v-list-group>     
         <v-list-group prepend-icon="mdi-storefront" value="store" color="primary" style="color: var(--v-theme-primary);">
           <template v-slot:activator="{ props }">
             <v-list-item v-bind="props" title="Store" color="primary" variant="text" style="color: var(--v-theme-primary);"></v-list-item>
@@ -23,6 +29,13 @@
           <v-list-item title="Products" prepend-icon="mdi-package-variant-closed" color="primary" variant="text" style="color: var(--v-theme-primary);"></v-list-item>
           <v-list-item title="Sells" prepend-icon="mdi-cash-register" color="primary" variant="text" style="color: var(--v-theme-primary);"></v-list-item>
           <v-list-item title="Inventory" prepend-icon="mdi-clipboard-list" color="primary" variant="text" style="color: var(--v-theme-primary);"></v-list-item>
+        </v-list-group>
+        <v-list-group prepend-icon="mdi-text-box-multiple" value="Reports" color="primary" style="color: var(--v-theme-primary);">
+          <template v-slot:activator="{ props }">
+            <v-list-item v-bind="props" title="Reports" color="primary" variant="text" style="color: var(--v-theme-primary);"></v-list-item>
+          </template>
+          <v-list-item title="Sales invoice" prepend-icon="mdi-file-table" color="primary" variant="text" style="color: var(--v-theme-primary);"></v-list-item>
+          <v-list-item title="Purchase invoice" prepend-icon="mdi-file-table-outline" color="primary" variant="text" style="color: var(--v-theme-primary);"></v-list-item>          
         </v-list-group>
       </v-list>
     </v-navigation-drawer>
