@@ -69,13 +69,8 @@
       </v-container>      
     </v-main>    
   </v-layout>
-  <v-container>  
-    <v-sheet
-      border="dashed md"
-      color="surface-light"
-      height="700"
-      rounded="lg"
-      width="100%"><router-view></router-view></v-sheet>
+  <v-container>
+    <router-view></router-view>     
   </v-container>
   <v-divider></v-divider>
   <v-footer class="d-flex flex-column" rounded="lg">
