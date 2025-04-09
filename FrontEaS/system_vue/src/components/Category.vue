@@ -11,12 +11,14 @@
               <v-icon color="primary" icon="mdi-storefront-outline" size="x-small" start></v-icon>  
               Category
             </v-toolbar-title>
+            <v-spacer></v-spacer>
             <v-text-field 
+                class="me-2"
                 v-model="search"
                 label="Search category"
                 prepend-inner-icon="mdi-magnify"
                 clearable
-                class="mx-auto"
+                
                 density="compact"
                 variant="outlined"></v-text-field>
                 <v-spacer></v-spacer>
@@ -67,25 +69,17 @@
       >
         <template v-slot:text>
           <v-row>
-            <v-col cols="12">
+            <v-col cols="12" md="8">
               <v-text-field v-model="record.title" label="Category Id"></v-text-field>
             </v-col>
   
-            <v-col cols="12" md="6">
+            <v-col cols="12" md="12">
               <v-text-field v-model="record.author" label="Name"></v-text-field>
             </v-col>
   
-            <v-col cols="12" md="6">
-              <v-select v-model="record.genre" :items="['Fiction', 'Dystopian', 'Non-Fiction', 'Sci-Fi']" label="Genre"></v-select>
-            </v-col>
-  
-            <v-col cols="12" md="6">
-              <v-number-input v-model="record.year" :max="adapter.getYear(adapter.date())" :min="1" label="Year"></v-number-input>
-            </v-col>
-  
-            <v-col cols="12" md="6">
-              <v-number-input v-model="record.pages" :min="1" label="Pages"></v-number-input>
-            </v-col>
+            <v-col cols="12" md="12">
+              <v-text-field v-model="record.genre" label="Description"></v-text-field>
+            </v-col>            
           </v-row>
         </template>
   
@@ -104,11 +98,13 @@
   <script>
     import { onMounted, ref, shallowRef } from 'vue'
     import { useDate } from 'vuetify'
+    import axios from 'axios'
   
     export default {
       data () {
         const adapter = useDate()
         return {
+          categories:[],
           adapter,
           DEFAULT_RECORD: { title: '', author: '', genre: '', year: adapter.getYear(adapter.date()), pages: 1 },
           books: [],
@@ -119,8 +115,7 @@
             { title: 'Id', key: 'title', align: 'start' },
             { title: 'Name', key: 'author' },
             { title: 'Description', key: 'genre' },
-            { title: 'Is Active', key: 'year', align: 'end' },
-            { title: 'Pages', key: 'pages', align: 'end' },
+            { title: 'Is Active', key: 'year', align: 'end' },           
             { title: 'Actions', key: 'actions', align: 'end', sortable: false },
           ],
           search: ''
@@ -129,7 +124,17 @@
       mounted () {
         this.reset()
       },
+      created(){
+        this.list
+      },
       methods: {
+        list() {
+          axios.get('http://localhost:5190/api/category/Listing').then(function(response){
+              console.log(response)
+          }).catch(function(error){
+              console.log(error)
+          });          
+        },
         add () {
           this.isEditing = false
           this.record = { ...this.DEFAULT_RECORD }
