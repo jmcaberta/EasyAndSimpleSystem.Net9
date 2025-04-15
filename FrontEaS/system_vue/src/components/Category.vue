@@ -112,10 +112,10 @@
           dialog: false,
           isEditing: false,
           headers: [
-            { title: 'Id', key: 'title', align: 'start' },
-            { title: 'Name', key: 'author' },
-            { title: 'Description', key: 'genre' },
-            { title: 'Is Active', key: 'year', align: 'end' },           
+            { title: 'Id', key: 'CategoryId', align: 'start' },
+            { title: 'Name', key: 'CategoryName' },
+            { title: 'Description', key: 'CategoryDescription' },
+            { title: 'Is Active', key: 'IsActive', align: 'end' },           
             { title: 'Actions', key: 'actions', align: 'end', sortable: false },
           ],
           search: ''
@@ -125,12 +125,14 @@
         this.reset()
       },
       created(){
-        this.list
+        this.list()
       },
       methods: {
         list() {
-          axios.get('http://localhost:5190/api/category/Listing').then(function(response){
-              console.log(response)
+          let me = this;
+          axios.get('api/category/Listing').then(function(response){
+              //console.log(response);
+              me.categories = response.data;
           }).catch(function(error){
               console.log(error)
           });          
