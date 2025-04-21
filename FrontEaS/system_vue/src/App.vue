@@ -21,7 +21,7 @@
             <v-list-item v-bind="props" title="Warehouse" color="primary" variant="text"
               style="color: var(--v-theme-primary);"></v-list-item>
           </template>
-          <v-list-item :to="{ name: 'category' }" title="Category" prepend-icon="mdi-sort" color="primary" variant="text"
+          <v-list-item :to="{ name: 'category' }" title="Category" prepend-icon="mdi-sort" variant="text"
             style="color: var(--v-theme-primary);"></v-list-item>
           <v-list-item title="Products" prepend-icon="mdi-package-variant-closed" color="primary" variant="text"
             style="color: var(--v-theme-primary);"></v-list-item>
