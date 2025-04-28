@@ -25,8 +25,8 @@
 
       <template v-slot:item.actions="{ item }">
         <div class="d-flex ga-2 justify-end">
-          <v-icon color="medium-emphasis" icon="mdi-pencil" size="small" @click="edit(item.CategoryId)"></v-icon>
-          <v-icon color="medium-emphasis" icon="mdi-delete" size="small" @click="remove(item.CategoryId)"></v-icon>
+          <v-icon color="medium-emphasis" icon="mdi-pencil" size="small" @click="edit(item.categoryId)"></v-icon>
+          <v-icon color="medium-emphasis" icon="mdi-delete" size="small" @click="remove(item.categoryId)"></v-icon>
         </div>
       </template>
 
@@ -43,17 +43,17 @@
       <template v-slot:text>
         <v-row>
           <v-col cols="12" md="8">
-            <v-text-field v-model="record.CategoryId" label="Category Id"></v-text-field>
+            <v-text-field v-model="record.categoryId" label="Category Id"></v-text-field>
           </v-col>
 
           <v-col cols="12" md="12">
-            <v-text-field v-model="record.CategoryName" label="Name"></v-text-field>
+            <v-text-field v-model="record.categoryName" label="Name"></v-text-field>
           </v-col>
           <v-col cols="12" md="12">
-            <v-text-field v-model="record.CategoryDescription" label="Description"></v-text-field>
+            <v-text-field v-model="record.categoryDescription" label="Description"></v-text-field>
           </v-col>
           <v-col cols="12" md="12">
-            <v-switch v-model="record.IsActive" label="IsActive"></v-switch>
+            <v-switch v-model="record.isActive" label="IsActive"></v-switch>
           </v-col>
         </v-row>
       </template>
@@ -80,8 +80,8 @@ export default {
     return {
       categories: [],
       adapter,
-      DEFAULT_RECORD: { CategoryId: null, CategoryName: '', CategoryDescription: '', IsActive: true },
-      record: { CategoryId: null, CategoryName: '', CategoryDescription: '', IsActive: true },
+      DEFAULT_RECORD: { categoryId: null, categoryName: '', categoryDescription: '', isActive: true },
+      record: { categoryId: null, categoryName: '', categoryDescription: '', isActive: true },
       dialog: false,
       isEditing: false,
       headers: [
@@ -120,25 +120,42 @@ export default {
     edit(id)
     {
       this.isEditing = true
-      const found = this.categories.find(cat => cat.CategoryId === id)
+      const found = this.categories.find(cat => cat.categoryId === id)
       this.record = { ...found }
       this.dialog = true
     },
     remove(id)
     {
-      const index = this.categories.findIndex(cat => cat.CategoryId === id)
-      this.categories.splice(index, 1)
+      axios.delete('api/Category/Delete/${Id}').then(() => {
+        this.list()
+      }).catch(error => {
+        console.error(error)
+      })
+      //const index = this.categories.findIndex(cat => cat.categoryId === id)
+      //this.categories.splice(index, 1)
     },
     save()
     {
       if (this.isEditing)
       {
-        const index = this.categories.findIndex(cat => cat.CategoryId === this.record.CategoryId)
-        this.categories[index] = { ...this.record }
+        axios.put('api/Category/Update', this.record).then(()=> {
+          this.list();
+          this.dialog = false
+        }).catch(error => {
+          console.error(error)
+        })
+        //const index = this.categories.findIndex(cat => cat.categoryId === this.record.categoryId)
+        //this.categories[index] = { ...this.record }
       } else
       {
-        this.record.CategoryId = this.categories.length + 1
-        this.categories.push({ ...this.record })
+        axios.post('api/Category/Create', this.record).then(() => {
+          this.list()
+          this.dialog = false
+        }).catch(error => {
+          console.error(error)
+        })
+        //this.record.categoryId = this.categories.length + 1
+        //this.categories.push({ ...this.record })
       }
       this.dialog = false
     },
