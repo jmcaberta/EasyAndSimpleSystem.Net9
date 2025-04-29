@@ -73,6 +73,7 @@ namespace System.Web.Controllers
             
             category.CatName = model.CategoryName;
             category.CatDescription = model.CategoryDescription;
+            category.IsActive = model.IsActive;
 
             try
             {
