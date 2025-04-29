@@ -23,13 +23,17 @@
         </v-chip>
       </template> -->
 
+      <template v-slot:item.isActive="{ value }">
+        <v-icon :color = "value ? 'green': 'red'">
+          {{ value ? 'mdi-check-all' : 'mdi-close-outline' }}
+        </v-icon>
+      </template>
       <template v-slot:item.actions="{ item }">
         <div class="d-flex ga-2 justify-end">
           <v-icon color="medium-emphasis" icon="mdi-pencil" size="small" @click="edit(item.categoryId)"></v-icon>
           <v-icon color="medium-emphasis" icon="mdi-delete" size="small" @click="remove(item.categoryId)"></v-icon>
         </div>
       </template>
-
       <template v-slot:no-data>
         <v-btn prepend-icon="mdi-backup-restore" rounded="lg" text="Reload from API" variant="text" border
           @click="list"></v-btn>
@@ -45,7 +49,6 @@
           <v-col cols="12" md="8">
             <v-text-field v-model="record.categoryId" label="Category Id"></v-text-field>
           </v-col>
-
           <v-col cols="12" md="12">
             <v-text-field v-model="record.categoryName" label="Name"></v-text-field>
           </v-col>
@@ -67,6 +70,9 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
+  <v-snackbar v-model="snackbar" :color="snackbarColor" timeout="3000">
+    {{ snackbarText }}
+  </v-snackbar>
 </template>
 <script>
 import { onMounted, ref, shallowRef } from 'vue'
@@ -91,7 +97,10 @@ export default {
         { title: 'Is Active', key: 'isActive', align: 'end' },
         { title: 'Actions', key: 'actions', align: 'end', sortable: false },
       ],
-      search: ''
+      search: '',
+      snackbar: false,
+      snackbarText: '',
+      snackbarColor: 'success',
     }
   },
   mounted()
@@ -100,13 +109,14 @@ export default {
   },
   methods: {
     list()
-    {
-      let me = this;
-      axios.get('api/Category/Listing').then(function (response)
+    {      
+      axios.get('api/Category/Listing').then((response) =>
       {
-        //console.log(response);
-        me.categories = response.data;
-      }).catch(function (error)
+        this.categories = response.data.map(cat => ({
+          ...cat,
+          isActive: cat.isActive === true || cat.isActive === 'true'
+        }))        
+      }).catch((error) =>
       {
         console.log(error)
       });
@@ -121,31 +131,39 @@ export default {
     {
       this.isEditing = true
       const found = this.categories.find(cat => cat.categoryId === id)
-      this.record = { ...found }
+      this.record = { 
+        ...found,
+        isActive: found.isActive === true || found.isActive === 'true'
+       }
       this.dialog = true
     },
     remove(id)
     {
-      axios.delete('api/Category/Delete/${Id}').then(() => {
-        this.list()
-      }).catch(error => {
-        console.error(error)
-      })
-      //const index = this.categories.findIndex(cat => cat.categoryId === id)
-      //this.categories.splice(index, 1)
+      if (window.confirm('Are you sure, you want to delete this category?')){
+        axios.delete(`api/Category/Delete/${id}`).then(() => {
+          this.list()
+          this.snackbarText = 'Category deleted successfully'
+          this.snackbarColor = 'success'
+          this.snackbar = true
+        }).catch(error => {
+          console.error(error)
+        })
+      }      
     },
     save()
     {
+      this.record.isActive = this.record.isActive === true || this.record.isActive === 'true'
       if (this.isEditing)
       {
         axios.put('api/Category/Update', this.record).then(()=> {
           this.list();
           this.dialog = false
+          this.snackbarText = 'Category updated successfully'
+          this.snackbarColor = 'success'
+          this.snackbar = true
         }).catch(error => {
           console.error(error)
-        })
-        //const index = this.categories.findIndex(cat => cat.categoryId === this.record.categoryId)
-        //this.categories[index] = { ...this.record }
+        })        
       } else
       {
         axios.post('api/Category/Create', this.record).then(() => {
@@ -153,9 +171,7 @@ export default {
           this.dialog = false
         }).catch(error => {
           console.error(error)
-        })
-        //this.record.categoryId = this.categories.length + 1
-        //this.categories.push({ ...this.record })
+        })        
       }
       this.dialog = false
     },
