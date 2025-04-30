@@ -1,7 +1,7 @@
 <template>
     <CrudTable
-        title="Article"
-        icon="mdi-book-open-variant"
+        title="Products"
+        icon="mdi-package-variant-closed"
         :headers="headers"
         :fields="fields"
         :api="api"
