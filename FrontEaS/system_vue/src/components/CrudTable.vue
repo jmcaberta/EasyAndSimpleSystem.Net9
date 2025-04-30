@@ -12,6 +12,7 @@
                     <v-text-field v-model="search" prepend-inner-icon="mdi-magnify" clearable density="compact" variant="out"/>
                     <v-btn prepend-icon="mdi-plus" text="New" @click="opendDialog(false)"></v-btn>
                 </v-toolbar>
+            </template>
 
                 <template v-slot:[`item.${statusField}`]="{ value }">
                     <v-icon :color="value ? 'green' : 'red'">{{ value ? 'mdi-mdi-check-all' : 'mdi-close-outline' }}</v-icon>
@@ -24,8 +25,7 @@
 
                 <template v-slot:no-data>
                     <v-btn text="Reload" @click="loadItems">Reload</v-btn>
-                </template>
-            </template>
+                </template>            
         </v-data-table>
     </v-sheet>
 
@@ -61,9 +61,9 @@ export default{
         headers: Array,
         fields: Array,
         api: Object,
-        idFields: {
-            type:String,
-            default: 'isActive'
+        idField: {
+            type: String,
+            default: 'id'
         }
     },
     data() {
@@ -91,7 +91,8 @@ export default{
         },
         openDialog(editing, item = null){
             this.editing = editing
-            this.dialog = truethis.record = editing ? {...item} : Object.fromEntries(this.fields.map(f => [f.model, f.default ?? '']))
+            this.dialog = true 
+            this.record = editing ? {...item} : Object.fromEntries(this.fields.map(f => [f.model, f.default ?? '']))
         },
         saveItem(){
             const req = this.editing
@@ -108,7 +109,26 @@ export default{
                 this.snackbarColor = 'success'
                 this.snackbar = true
             })
+        },
+        removeItem(id) {
+            if (!confirm('Are you sure?')) return 
+            axios.delete(this.api.delete(id)).then(() => {
+                this.loadItems()
+                this.snackbarText = `${this.title} deleted`
+                this.snackbarColor = 'success'
+                this.snackbar = true
+            }) 
         }
+    },
+    mounted(){
+        this.loadItems()
     }
 }
 </script>
+
+<style scoped>
+v-icon{
+    cursor: pointer;
+    margin-inline: 4px;
+}
+</style>

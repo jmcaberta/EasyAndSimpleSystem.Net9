@@ -9,7 +9,7 @@
         </v-list-item>
         <v-divider></v-divider>
         <v-list density="compact" nav>
-          <v-list-item color="primary" prepend-icon="mdi-home-city" title="Home" value="home" variant="text"
+          <v-list-item :to="{ name: 'home' }" color="primary" prepend-icon="mdi-home-city" title="Home" value="home" variant="text"
             style="color: var(--v-theme-primary);">
           </v-list-item>
         </v-list>
@@ -23,7 +23,7 @@
           </template>
           <v-list-item :to="{ name: 'category' }" title="Category" prepend-icon="mdi-sort" variant="text"
             style="color: var(--v-theme-primary);"></v-list-item>
-          <v-list-item title="Products" prepend-icon="mdi-package-variant-closed" color="primary" variant="text"
+          <v-list-item :to="{ name: 'article' }" title="Products" prepend-icon="mdi-package-variant-closed" color="primary" variant="text"
             style="color: var(--v-theme-primary);"></v-list-item>
           <v-list-item title="Inventory" prepend-icon="mdi-clipboard-list" color="primary" variant="text"
             style="color: var(--v-theme-primary);"></v-list-item>
