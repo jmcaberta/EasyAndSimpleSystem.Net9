@@ -21,11 +21,13 @@ namespace System.Web.Controllers
 
         public async Task<IEnumerable<ArticleViewModel>> Listing()
         {
-            var article = await _context.Articles.ToListAsync();
+            var article = await _context.Articles.Include(a => a.Category).ToListAsync();
+            //var article = await _context.Articles.ToListAsync();
             return article.Select(a => new ArticleViewModel
             {
                 ArticleId = a.ArtId,
                 CatId = a.CatId,
+                CategoryName = a.Category.CatName,
                 ArtCode = a.ArtCode,
                 ArtName = a.ArtName,
                 SellPrice = a.SellPrice,
@@ -34,6 +36,11 @@ namespace System.Web.Controllers
                 IsActive = a.IsActive,
                 
             });
+        }
+
+        private bool ArticleExists(int id)
+        {
+            return _context.Articles.Any(e => e.ArtId == id);
         }
     }
 }

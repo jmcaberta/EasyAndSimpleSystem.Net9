@@ -13,7 +13,7 @@ public class Article
     private string _artDescription;
     private bool _isActive;
     
-    public Category category { get; set; }
+    public Category Category { get; set; }
 
     [Key]
     public int ArtId
