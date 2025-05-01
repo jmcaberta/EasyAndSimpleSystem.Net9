@@ -10,7 +10,7 @@
                     </v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-text-field v-model="search" prepend-inner-icon="mdi-magnify" clearable density="compact" variant="out"/>
-                    <v-btn prepend-icon="mdi-plus" text="New" @click="opendDialog(false)"></v-btn>
+                    <v-btn color="primary" prepend-icon="mdi-plus" text="New" @click="opendDialog(false)"></v-btn>
                 </v-toolbar>
             </template>
 
@@ -118,7 +118,7 @@ export default{
                 this.snackbarColor = 'success'
                 this.snackbar = true
             }) 
-        }
+        },
     },
     mounted(){
         this.loadItems()

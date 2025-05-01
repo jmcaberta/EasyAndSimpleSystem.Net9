@@ -12,6 +12,8 @@ public class Article
     private int _itemCount;
     private string _artDescription;
     private bool _isActive;
+    
+    public Category category { get; set; }
 
     [Key]
     public int ArtId

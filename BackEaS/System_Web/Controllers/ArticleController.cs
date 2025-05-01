@@ -26,6 +26,12 @@ namespace System.Web.Controllers
             {
                 ArticleId = a.ArtId,
                 CatId = a.CatId,
+                ArtCode = a.ArtCode,
+                ArtName = a.ArtName,
+                SellPrice = a.SellPrice,
+                ItemCount = a.ItemCount,
+                ArtDescription = a.ArtDescription,
+                IsActive = a.IsActive,
                 
             });
         }
