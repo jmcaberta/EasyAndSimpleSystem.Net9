@@ -10,16 +10,16 @@
                     </v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-text-field v-model="search" prepend-inner-icon="mdi-magnify" clearable density="compact" variant="out"/>
-                    <v-btn color="primary" prepend-icon="mdi-plus" text="New" @click="opendDialog(false)"></v-btn>
+                    <v-btn color="primary" prepend-icon="mdi-plus" text="New" @click="openDialog(false)"></v-btn>
                 </v-toolbar>
             </template>
 
                 <template v-slot:[`item.${statusField}`]="{ value }">
-                    <v-icon :color="value ? 'green' : 'red'">{{ value ? 'mdi-mdi-check-all' : 'mdi-close-outline' }}</v-icon>
+                    <v-icon :color="value ? 'green' : 'red'">{{ value ? 'mdi-check-all' : 'mdi-close-outline' }}</v-icon>
                 </template>
 
                 <template v-slot:item.actions="item">
-                    <v-icon icon="mdi-pencil" @click="opendDialog(true, item)"></v-icon>
+                    <v-icon icon="mdi-pencil" @click="openDialog(true, item)"></v-icon>
                     <v-icon icon="mdi-delete" @click="removeItem(item[idField])"></v-icon>
                 </template>
 
@@ -31,18 +31,24 @@
 
     <v-dialog v-model="dialog" max-width="500">
         <v-card :title="dialogTitle">
-            <v-card-text>
+            <v-card-text>                
                 <v-row>
                     <v-col v-for="field in fields" :key="field.model" cols="12">
-                        <component :is="field.type || 'v-text-field'" v-model="record[field.model]" :label="field.label" :type="field.inputType || 'text'"/>
+                        <v-switch v-if="field.type === 'switch'" 
+                                  v-model="record[field.model]" 
+                                  :label="field.label" />
+                        <v-text-field v-else 
+                                      v-model="record[field.model]" 
+                                      :label="field.label" 
+                                      :type="field.inputType || 'text'" />
                     </v-col>
-                </v-row>
+                </v-row>                
             </v-card-text>
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn text="Cancel" @click="dialog = false"/>
-                <v-btn text="Save" @click="saveItem"/>
-            </v-card-actions>
+        <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn text="Cancel" @click="dialog = false"/>
+            <v-btn text="Save" @click="saveItem"/>
+        </v-card-actions>
         </v-card>
     </v-dialog>
 
@@ -54,16 +60,17 @@ import axios from 'axios';
 export default{
     props: {
         title: String,
-        icon: {
-            type: String,
-            default: 'mdi-database'
-        },
+        icon: String,
         headers: Array,
         fields: Array,
         api: Object,
         idField: {
             type: String,
             default: 'id'
+        },
+        statusField:{
+            type: String,
+            default: 'isActive'
         }
     },
     data() {
@@ -92,7 +99,10 @@ export default{
         openDialog(editing, item = null){
             this.editing = editing
             this.dialog = true 
-            this.record = editing ? {...item} : Object.fromEntries(this.fields.map(f => [f.model, f.default ?? '']))
+            this.record = editing ? {...item} : this.fields.reduce((acc, f) => {
+                acc[f.model] = f.default ?? (f.type === 'switch' ? false ? '')
+                return acc 
+            }, {})
         },
         saveItem(){
             const req = this.editing

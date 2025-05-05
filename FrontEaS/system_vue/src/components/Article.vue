@@ -19,8 +19,12 @@ export default {
         return {
             headers: [
                 { title: 'Article Id', key: 'articleId' },
-                { title: 'Name', key: 'articleName' },
-                { title: 'Description', key: 'articleDescription' },
+                { title: 'Category', key: 'categoryName'},
+                { title: 'Article Code', key: 'artCode'},
+                { title: 'Name', key: 'artName' },
+                { title: 'Price', key: 'sellPrice'},
+                { title: 'No. items', key: 'itemCount'},
+                { title: 'Description', key: 'artDescription' },
                 { title: 'Active', key: 'isActive' },
                 { title: 'Actions' ,key: 'actions' }
             ],
