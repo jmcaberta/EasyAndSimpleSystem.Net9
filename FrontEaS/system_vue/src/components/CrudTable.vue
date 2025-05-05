@@ -37,6 +37,11 @@
                         <v-switch v-if="field.type === 'switch'" 
                                   v-model="record[field.model]" 
                                   :label="field.label" />
+                        <v-select v-else-if="field.type === 'select'" v-model="record[field.model]"
+                                :label="field.label"
+                                :items="field.items"
+                                :item-text="text"
+                                :item-value="value"/>
                         <v-text-field v-else 
                                       v-model="record[field.model]" 
                                       :label="field.label" 
@@ -96,13 +101,22 @@ export default{
                 this.items = res.data
             })
         },
-        openDialog(editing, item = null){
+        openDialog( editing, item = null ){
             this.editing = editing
-            this.dialog = true 
-            this.record = editing ? {...item} : this.fields.reduce((acc, f) => {
-                acc[f.model] = f.default ?? (f.type === 'switch' ? false ? '')
-                return acc 
-            }, {})
+            this.dialog = true
+            if (editing) {
+                this.record = this.normalizeItem(item)
+            } else {
+                this.record = Object.fromEntries(this.fields.map(f => [f.model, f.default ?? '']))
+            }
+            //this.record = editing ? {...item} : Object.fromEntries(this.fields.map(f => [f.model, f.default ?? '']))
+        },
+        normalizeItem(item){
+            const normalized = {}
+            this.fields.forEach(f => {
+                normalized[f.model] = item[f.model] ?? ''
+            })
+            return normalized
         },
         saveItem(){
             const req = this.editing
