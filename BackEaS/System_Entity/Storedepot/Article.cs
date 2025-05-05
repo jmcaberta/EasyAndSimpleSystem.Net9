@@ -6,6 +6,7 @@ public class Article
 {
     private int _artId;
     private int _catId;
+    public Category Category { get; set; }
     private string _artCode;
     private string _artName;
     private decimal _sellPrice;
@@ -13,7 +14,7 @@ public class Article
     private string _artDescription;
     private bool _isActive;
     
-    public Category Category { get; set; }
+    
 
     [Key]
     public int ArtId

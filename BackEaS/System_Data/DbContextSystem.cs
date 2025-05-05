@@ -21,14 +21,6 @@ public class DbContextSystem : DbContext
                 base.OnModelCreating(modelBuilder);
                 modelBuilder.ApplyConfiguration(new CategoryMap());
                 modelBuilder.ApplyConfiguration(new ArticleMap());
-                //modelBuilder.Entity<Category>()
-                        //.HasKey(c => c.CatId);
-
-                /*modelBuilder.Entity<Article>()
-                        .HasOne(a => a.Category)
-                        .WithMany(c => c.Articles)
-                        .HasForeignKey(a => a.CatId);*/
-
         }
        
 }

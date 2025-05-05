@@ -9,14 +9,19 @@ public class ArticleMap : IEntityTypeConfiguration<Article>
     public void Configure(EntityTypeBuilder<Article> builder)
     {
         builder.ToTable("articles")
-            .HasKey((a => a.ArtId));
-        builder.Property(a => a.ArtId).HasColumnName("ArtId");
-        builder.Property(a => a.CatId).HasColumnName("CatId");
-        builder.Property(a => a.ArtCode).HasColumnName("ArtCode");
-        builder.Property(a => a.ArtName).HasColumnName("ArtName");
-        builder.Property(a => a.SellPrice).HasColumnName("SellPrice");
-        builder.Property(a => a.ItemCount).HasColumnName("ItemCount");
-        builder.Property(a => a.IsActive).HasColumnName("IsActive");
+           .HasKey((a => a.ArtId));
+        builder.HasOne(a => a.Category)
+            .WithMany(c => c.Articles)
+            .HasForeignKey(a => a.CatId)
+            .HasConstraintName("FK_Article_Category");
+        builder.Property(a => a.ArtId).HasColumnName("art_id");
+        builder.Property(a => a.CatId).HasColumnName("cat_id");
+        builder.Property(a => a.ArtCode).HasColumnName("art_code");
+        builder.Property(a => a.ArtName).HasColumnName("art_name");
+        builder.Property(a => a.SellPrice).HasColumnName("sell_price");
+        builder.Property(a => a.ItemCount).HasColumnName("item_count");
+        builder.Property(a => a.ArtDescription).HasColumnName("art_description");
+        builder.Property(a => a.IsActive).HasColumnName("is_active");
         
     }
 }
