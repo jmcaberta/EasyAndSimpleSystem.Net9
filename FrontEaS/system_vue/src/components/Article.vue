@@ -3,7 +3,7 @@
         title="Products"
         icon="mdi-package-variant-closed"
         :headers="[
-            { text: 'Id', value: 'artId' },
+            { text: 'Id', value: 'articleId' },
             { text: 'Category', value: 'categoryName'},
             { text: 'Code', value: 'artCode' },
             { text: 'Name', value: 'artName' },
@@ -38,23 +38,7 @@ export default {
     components: { CrudTable },
     data(){
         return {
-            categoryOptions: [],
-            /* headers: [
-                { title: 'Article Id', key: 'articleId' },
-                { title: 'Category', key: 'categoryName'},
-                { title: 'Article Code', key: 'artCode'},
-                { title: 'Name', key: 'artName' },
-                { title: 'Price', key: 'sellPrice'},
-                { title: 'No. items', key: 'itemCount'},
-                { title: 'Description', key: 'artDescription' },
-                { title: 'Active', key: 'isActive' },
-                { title: 'Actions' ,key: 'actions' }
-            ],
-            fields:[
-                { model: 'articleName', label: 'Name' },
-                { model: 'articleDescription', label: 'Description' },
-                { model: 'isActive', label: 'Is Active', type: 'v-switch', default: true}
-            ], */
+            categoryOptions: [],          
             api: {
                 list: 'api/Article/Listing',
                 create: 'api/Article/Create',
@@ -65,11 +49,8 @@ export default {
     },
     methods: {
         loadCategories() {
-            axios.get('/api/Category/Listing').then(res => {
-                this.categoryOptions = res.data.map(c => ({
-                    text: c.categoryName,
-                    value: c.categoryId
-                }))
+            axios.get('/api/Category/Select').then(res => {
+                this.categoryOptions = res.data.map(c => c.categoryName)
             }).catch(err => {
                 console.error('Failed to load categories', err)
             })

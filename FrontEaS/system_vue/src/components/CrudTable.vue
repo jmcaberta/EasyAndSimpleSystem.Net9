@@ -19,8 +19,8 @@
                 </template>
 
                 <template v-slot:item.actions="item">
-                    <v-icon icon="mdi-pencil" @click="openDialog(true, item)"></v-icon>
-                    <v-icon icon="mdi-delete" @click="removeItem(item[idField])"></v-icon>
+                    <v-icon color="blue" icon="mdi-pencil" @click="openDialog(true, item)"></v-icon>
+                    <v-icon color="red" icon="mdi-delete" @click="removeItem(item[idField])"></v-icon>
                 </template>
 
                 <template v-slot:no-data>
@@ -40,8 +40,8 @@
                         <v-select v-else-if="field.type === 'select'" v-model="record[field.model]"
                                 :label="field.label"
                                 :items="field.items"
-                                :item-text="text"
-                                :item-value="value"/>
+                                item-text="text"
+                                item-value="value"/>
                         <v-text-field v-else 
                                       v-model="record[field.model]" 
                                       :label="field.label" 
@@ -104,8 +104,8 @@ export default{
         openDialog( editing, item = null ){
             this.editing = editing
             this.dialog = true
-            if (editing) {
-                this.record = this.normalizeItem(item)
+            if (editing && item) {
+                this.record = { ...item }
             } else {
                 this.record = Object.fromEntries(this.fields.map(f => [f.model, f.default ?? '']))
             }
