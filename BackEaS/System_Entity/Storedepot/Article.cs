@@ -20,7 +20,7 @@ public class Article
     public int ArtId
     {
         get => _artId;
-        private set
+        set
         {
             if (value <= 0) throw new AggregateException("The Article Id must be greater than zero"); _artId = value;
         }
@@ -29,7 +29,7 @@ public class Article
     public int CatId
     {
         get => _catId;
-        private set
+        set
         {
             if (value <= 0) throw new AggregateException("The Category Id must be greater than zero"); _catId = value;
         }
@@ -38,7 +38,7 @@ public class Article
     public string ArtCode
     {
         get => _artCode;
-        private set
+        set
         {
             if ( string.IsNullOrWhiteSpace(value)) throw new AggregateException("The Article Code cannot be empty"); _artCode = value;
         }
@@ -47,7 +47,7 @@ public class Article
     public string ArtName
     {
         get => _artName;
-        private set
+        set
         {
             if (string.IsNullOrWhiteSpace(value)) throw new AggregateException("The Article Name cannot be empty"); _artName = value;
         }
@@ -56,7 +56,7 @@ public class Article
     public decimal SellPrice
     {
         get => _sellPrice;
-        private set
+        set
         {
             if (value <= 0) throw new ArgumentException("The Sell Price must be greater than zero"); _sellPrice = value;
         }
@@ -65,7 +65,7 @@ public class Article
     public int ItemCount
     {
         get => _itemCount;
-        private set
+        set
         {
             if (value <= 0) throw new AggregateException("The Item Count must be greater than zero"); _itemCount = value;
         }
@@ -74,7 +74,7 @@ public class Article
     public string ArtDescription
     {
         get => _artDescription;
-        private set
+        set
         {
             if (string.IsNullOrWhiteSpace(value)) throw new AggregateException("The Article Description cannot be empty"); _artDescription = value;
         }
@@ -83,6 +83,6 @@ public class Article
     public bool IsActive
     {
         get => _isActive;
-        private set => _isActive = value;
+        set => _isActive = value;
     }
 }

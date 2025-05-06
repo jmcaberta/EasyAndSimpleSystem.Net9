@@ -50,6 +50,17 @@ namespace System.Web.Controllers
                 IsActive = category.IsActive
             });
         }
+        // Get: api/Category/Select
+        [HttpGet("[action]")]
+        public async Task<IEnumerable<SelectViewModel>> Select()
+        {
+            var category = await _context.Categories.Where(c => c.IsActive == true).ToListAsync();
+            return category.Select(c => new SelectViewModel
+            {
+                CategoryId = c.CatId,
+                CategoryName = c.CatName
+            });
+        }
         // Put: api/Categories/Update
         [HttpPut("[action]")]
         public async Task<IActionResult> Update([FromBody] UpdateViewModel model)
