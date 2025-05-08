@@ -1,12 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace System.Entity.Storedepot;
+namespace System.Web.Models.Storedepot.Article;
 
-public class Article
+public class CreateViewModel
 {
-    private int _articleId;
     private int _catId;
-    public Category Category { get; set; }
     private string _artCode;
     private string _artName;
     private decimal _sellPrice;
@@ -14,17 +12,6 @@ public class Article
     private string _artDescription;
     private bool _isActive;
     
-    
-
-    [Key]
-    public int ArticleId
-    {
-        get => _articleId;
-        set
-        {
-            if (value <= 0) throw new AggregateException("The Article Id must be greater than zero"); _articleId = value;
-        }
-    }
     [Required]
     public int CatId
     {
