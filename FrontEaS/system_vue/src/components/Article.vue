@@ -3,15 +3,15 @@
         title="Products"
         icon="mdi-package-variant-closed"
         :headers="[
-            { text: 'Id', value: 'articleId' },
-            { text: 'Category', value: 'categoryName'},
-            { text: 'Code', value: 'artCode' },
-            { text: 'Name', value: 'artName' },
-            { text: 'Price', value: 'sellPrice', inputType: 'number' },
-            { text: 'No. Items', value: 'itemCount', inputType: 'number' },
-            { text: 'Description', valur: 'artDescription' },
-            { text: 'Active', value: 'isActive' },
-            { text: 'Actions', value: 'actions', sortable: false }
+            { title: 'Id', value: 'articleId' },
+            { title: 'Category', value: 'categoryName'},
+            { title: 'Code', value: 'artCode' },
+            { title: 'Name', value: 'artName' },
+            { title: 'Price', value: 'sellPrice', inputType: 'number', sortable: false },
+            { title: 'No. Items', value: 'itemCount', inputType: 'number', sortable: false},
+            { title: 'Description', value: 'artDescription' },
+            { title: 'Active', value: 'isActive' },
+            { title: 'Actions', value: 'actions', sortable: false }
         ]"
         :fields="[
             { model: 'articleId', label: 'Id'},
@@ -43,14 +43,14 @@ export default {
                 list: 'api/Article/Listing',
                 create: 'api/Article/Create',
                 update: 'api/Article/Update',
-                delete: 'api/Article/Delete/${id}'
+                delete: (id) => `api/Article/Delete/${id}`
             }
         }
     },
     methods: {
         loadCategories() {
             axios.get('/api/Category/Select').then(res => {
-                this.categoryOptions = res.data.map(c => c.categoryName)
+                this.categoryOptions = res.data.map(c => ({ title: c.categoryName, value: c.catId}))
             }).catch(err => {
                 console.error('Failed to load categories', err)
             })

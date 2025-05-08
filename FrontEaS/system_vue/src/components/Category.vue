@@ -13,15 +13,7 @@
           <v-spacer></v-spacer>
           <v-btn class="me-2" prepend-icon="mdi-plus" rounded="lg" text="New Category" border @click="add"></v-btn>
         </v-toolbar>
-      </template>
-
-      <!-- <template v-slot:item.title="{ value }">
-        <v-chip :text="value" prepend-icon="mdi-book" label>
-          <template v-slot:prepend>
-            <v-icon color="primary"></v-icon>
-          </template>
-        </v-chip>
-      </template> -->
+      </template>     
 
       <template v-slot:item.isActive="{ value }">
         <v-icon :color = "value ? 'green': 'red'">
