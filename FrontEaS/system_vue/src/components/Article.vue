@@ -13,13 +13,12 @@
             { title: 'Active', value: 'isActive' },
             { title: 'Actions', value: 'actions', sortable: false }
         ]"
-        :fields="[
-            { model: 'articleId', label: 'Id'},
-            { model: 'catId', label: 'Category', type: 'select', items: categoryOptions },
+        :fields="[            
+            { model: 'categoryName', label: 'Category', type: 'select', items: categoryOptions },
             { model: 'artCode', label: 'Code' },
             { model: 'artName', label: 'Name' },
-            { model: 'sellPrice', label: 'Price' },
-            { model: 'itemCount', label: 'No. Items' },
+            { model: 'sellPrice', label: 'Price', type: 'number' },
+            { model: 'itemCount', label: 'No. Items', type: 'number' },
             { model: 'artDescription', label: 'Description'},
             { model: 'isActive', label: 'Active', type: 'switch'}
         ]"
@@ -54,7 +53,7 @@ export default {
             }).catch(err => {
                 console.error('Failed to load categories', err)
             })
-        }
+        },        
     },
     mounted() {
         this.loadCategories()

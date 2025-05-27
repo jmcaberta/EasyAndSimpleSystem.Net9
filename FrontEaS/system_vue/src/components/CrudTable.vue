@@ -1,7 +1,7 @@
 
 <template>
     <v-sheet border rounded>
-        <v-data-table :headers="headers" :items="items" :search="search">
+        <v-data-table :loading="loading" :headers="headers" :items="items" :search="search">
             <template v-slot:top>
                 <v-toolbar flat>
                     <v-toolbar-title>
@@ -9,8 +9,21 @@
                         {{ title }}
                     </v-toolbar-title>
                     <v-spacer></v-spacer>
-                    <v-text-field v-model="search" prepend-inner-icon="mdi-magnify" clearable density="compact" variant="out"/>
-                    <v-btn color="primary" prepend-icon="mdi-plus" text="New" @click="openDialog(false)"></v-btn>
+                    <v-row class="align-center" align="center" justify="end">
+                        <v-col cols="12" sm="6" md="4">
+                            <v-text-field 
+                                v-model="search" 
+                                prepend-inner-icon="mdi-magnify" 
+                                clearable density="compact" 
+                                variant="outlined" 
+                                placeholder="Search..." 
+                                hide-details/>                            
+                        </v-col>
+                        <v-col cols="12" sm="auto">
+                            <v-btn color="primary" prepend-icon="mdi-plus" text="New" @click="openDialog(false)" block/>
+                        </v-col>
+                    </v-row>
+                    
                 </v-toolbar>
             </template>
 
@@ -18,7 +31,7 @@
                     <v-icon :color="value ? 'green' : 'red'">{{ value ? 'mdi-check-all' : 'mdi-close-outline' }}</v-icon>
                 </template>
 
-                <template v-slot:item.actions="item">
+                <template v-slot:item.actions="{ item }">
                     <v-icon color="blue" icon="mdi-pencil" @click="openDialog(true, item)"></v-icon>
                     <v-icon color="red" icon="mdi-delete" @click="removeItem(item[idField])"></v-icon>
                 </template>
@@ -37,15 +50,16 @@
                         <v-switch v-if="field.type === 'switch'" 
                                   v-model="record[field.model]" 
                                   :label="field.label" />
-                        <v-select v-else-if="field.type === 'select'" v-model="record[field.model]"
+                        <v-select v-else-if="field.type === 'select'"
+                                v-model="record[field.model]"
                                 :label="field.label"
                                 :items="field.items"
-                                item-text="text"
+                                item-text="title"
                                 item-value="value"/>
                         <v-text-field v-else 
                                       v-model="record[field.model]" 
                                       :label="field.label" 
-                                      :type="field.inputType || 'text'" />
+                                      :type="field.type === 'number' ? 'number' : 'text'" />
                     </v-col>
                 </v-row>                
             </v-card-text>
@@ -87,7 +101,8 @@ export default{
             record: {},
             snackbar: false,
             snackbarText: '',
-            snackbarColor: 'success'
+            snackbarColor: 'success',
+            loading: false
         }
     },
     computed: {
@@ -97,19 +112,22 @@ export default{
     },
     methods:{
         loadItems(){
+            this.loading = true
             axios.get(this.api.list).then(res => {
                 this.items = res.data
+            }).finally(() => {
+                this.loading = false
             })
         },
         openDialog( editing, item = null ){
+            console.log('recibido', item)
             this.editing = editing
             this.dialog = true
-            if (editing && item) {
-                this.record = { ...item }
+            if (editing && item) {                
+                this.record = JSON.parse(JSON.stringify(item || {}))               
             } else {
                 this.record = Object.fromEntries(this.fields.map(f => [f.model, f.default ?? '']))
-            }
-            //this.record = editing ? {...item} : Object.fromEntries(this.fields.map(f => [f.model, f.default ?? '']))
+            }            
         },
         normalizeItem(item){
             const normalized = {}
@@ -130,7 +148,7 @@ export default{
                 this.dialog = false
             }).catch(err => {
                 this.snackbarText =`Error: ${err.message}`
-                this.snackbarColor = 'success'
+                this.snackbarColor = 'error'
                 this.snackbar = true
             })
         },
