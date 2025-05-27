@@ -11,6 +11,7 @@ public class UpdateViewModel
     private decimal _sellPrice;
     private int _itemCount;
     private string _artDescription;
+    private bool _isActive;
     
     [Required]
     public int ArticleId { get => _articleId; set => _articleId = value; }
@@ -27,5 +28,6 @@ public class UpdateViewModel
     public int ItemCount { get => _itemCount; set => _itemCount = value; }
     [Required]
     public string ArtDescription { get => _artDescription; set => _artDescription = value; }
+    public bool IsActive { get => _isActive; set => _isActive = value; }
     
 }

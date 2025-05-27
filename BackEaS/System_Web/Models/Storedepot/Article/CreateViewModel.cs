@@ -16,10 +16,7 @@ public class CreateViewModel
     public int CatId
     {
         get => _catId;
-        set
-        {
-            if (value <= 0) throw new AggregateException("The Category Id must be greater than zero"); _catId = value;
-        }
+        set => _catId = value;
     }
     [Required]
     public string ArtCode

@@ -99,6 +99,7 @@ namespace System.Web.Controllers
             article.SellPrice = model.SellPrice;
             article.ItemCount = model.ItemCount;
             article.ArtDescription = model.ArtDescription;
+            article.IsActive = model.IsActive;
 
             try
             {
@@ -131,10 +132,22 @@ namespace System.Web.Controllers
                 ArtDescription = model.ArtDescription,
                 IsActive = true
             };
-            return Ok();
+
+            try
+            {
+                _context.Articles.Add(article);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error in Create: {e.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error in Create");
+            }
+            
         }
         
-        //Put: appi/Article/SetActivateStatus/{id}?isActive=true
+        //Put: api/Article/SetActivateStatus/{id}?isActive=true
         [HttpPut("[action]/{id}")]
         public async Task<ActionResult> SetActivateStatus([FromRoute] int id, [FromQuery] bool isActive)
         {
