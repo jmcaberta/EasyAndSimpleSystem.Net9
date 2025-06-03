@@ -1,6 +1,6 @@
 <template>
   <v-sheet border rounded>
-    <v-data-table :headers="headers" :items="categories" :search="search">
+    <v-data-table :loading="loading" :headers="headers" :items="categories" :search="search">
       <template v-slot:top>
         <v-toolbar flat class="d-flex align-center">
           <v-toolbar-title>
@@ -93,6 +93,7 @@ export default {
       snackbar: false,
       snackbarText: '',
       snackbarColor: 'success',
+      loading: false
     }
   },
   mounted()

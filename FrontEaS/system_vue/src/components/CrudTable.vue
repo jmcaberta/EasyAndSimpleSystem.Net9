@@ -6,7 +6,6 @@
                 <v-toolbar flat>
                     <v-toolbar-title>
                         <v-icon color="primary" start>{{ icon }}</v-icon>
-                        {{ title }}
                     </v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-row class="align-center" align="center" justify="end">
@@ -126,7 +125,7 @@ export default{
             if (editing && item) {                
                 this.record = JSON.parse(JSON.stringify(item || {}))               
             } else {
-                this.record = Object.fromEntries(this.fields.map(f => [f.model, f.default ?? '']))
+                this.record = Object.fromEntries(this.fields.map(f => [f.model, f.default ?? null]))
             }            
         },
         normalizeItem(item){
