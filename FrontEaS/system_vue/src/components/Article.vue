@@ -15,15 +15,15 @@
             </template>
 
             <template v-slot:item.isActive="{ value }">
-                <v-icon :color="value ? 'gree' : 'red'">
-                    {{ value ? 'medi-mdi-check-all' : 'mdi-close-outline' }}
+                <v-icon :color="value ? 'green' : 'red'">
+                    {{ value ? 'mdi-check-all' : 'mdi-close-outline' }}
                 </v-icon>
             </template>
 
-            <template v-slot_item.actions="{ item }">
+            <template v-slot:item.actions="{ item }">
                 <div class="d-flex ga-2 justify-end">
-                    <v-icon color="medium-emphasis" icon="mdi-pencil" size="small" @click="edit(item.articleId)"></v-icon>
-                    <v-icon color="medium-emphasis" icon="mdi-delete" size="small" @click="edit(item.articleId)"></v-icon>
+                    <v-icon color="blue" icon="mdi-pencil" size="small" @click="edit(item.articleId)"></v-icon>
+                    <v-icon color="red" icon="mdi-delete" size="small" @click="remove(item.articleId)"></v-icon>
                 </div>
             </template>
 
@@ -41,13 +41,13 @@
                         <v-text-field v-model="record.articleId" label="Product Id"></v-text-field>
                     </v-col>
                     <v-col cols="12" md="8">
-                        <v-text-field v-model="record.categoryId" label="Category"></v-text-field>
+                        <v-text-field v-model="record.catId" label="Category"></v-text-field>
                     </v-col>
                     <v-col cols="8" md="6">
                         <v-text-field v-model="record.artCode" label="Product code"></v-text-field>
                     </v-col>
                     <v-col cols="12" md="8">
-                        <v-text-field v-model="record.articleName" label="Name"></v-text-field>
+                        <v-text-field v-model="record.artName" label="Name"></v-text-field>
                     </v-col>
                     <v-col cols="6" md="4">
                         <v-text-field v-model="record.sellPrice" label="Price"></v-text-field>
@@ -88,20 +88,20 @@ export default {
         return{
             articles: [],
             adapter,
-            DEFAULT_RECORD: { articleId: null, categoryId: null, artCode: '', articleName: '', sellPrice: null, itemCount: null, artDescription: '', isActive: true },
-            record: { articleId: null, categoryId: null, artCode: '', articleName: '', sellPrice: null, itemCount: null, artDescription: '', isActive: true },
+            DEFAULT_RECORD: { articleId: null, catId: null, artCode: '', artName: '', sellPrice: null, itemCount: null, artDescription: '', isActive: true },
+            record: { articleId: null, catId: null, artCode: '', artName: '', sellPrice: null, itemCount: null, artDescription: '', isActive: true },
             dialog: false,
             isEditing: false,
             headers: [
                 { title: 'Id', value: 'articleId' },
-            { title: 'Category', value: 'categoryName'},
-            { title: 'Code', value: 'artCode' },
-            { title: 'Name', value: 'artName' },
-            { title: 'Price', value: 'sellPrice', inputType: 'number', sortable: false },
-            { title: 'No. Items', value: 'itemCount', inputType: 'number', sortable: false},
-            { title: 'Description', value: 'artDescription' },
-            { title: 'Active', value: 'isActive' },
-            { title: 'Actions', value: 'actions', sortable: false }
+                { title: 'Category', value: 'categoryName'},
+                { title: 'Code', value: 'artCode' },
+                { title: 'Name', value: 'artName' },
+                { title: 'Price', value: 'sellPrice', inputType: 'number', sortable: false },
+                { title: 'No. Items', value: 'itemCount', inputType: 'number', sortable: false},
+                { title: 'Description', value: 'artDescription' },
+                { title: 'Active', value: 'isActive' },
+                { title: 'Actions', value: 'actions', sortable: false }
             ],
             search: '',
             snackbar: false,

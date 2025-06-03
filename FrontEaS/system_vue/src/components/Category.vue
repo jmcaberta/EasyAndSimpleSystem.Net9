@@ -22,8 +22,8 @@
       </template>
       <template v-slot:item.actions="{ item }">
         <div class="d-flex ga-2 justify-end">
-          <v-icon color="medium-emphasis" icon="mdi-pencil" size="small" @click="edit(item.categoryId)"></v-icon>
-          <v-icon color="medium-emphasis" icon="mdi-delete" size="small" @click="remove(item.categoryId)"></v-icon>
+          <v-icon color="blue" icon="mdi-pencil" size="small" @click="edit(item.categoryId)"></v-icon>
+          <v-icon color="red" icon="mdi-delete" size="small" @click="remove(item.categoryId)"></v-icon>
         </div>
       </template>
       <template v-slot:no-data>
