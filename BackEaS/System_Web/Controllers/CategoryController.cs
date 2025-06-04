@@ -57,7 +57,7 @@ namespace System.Web.Controllers
             var category = await _context.Categories.Where(c => c.IsActive == true).ToListAsync();
             return category.Select(c => new SelectViewModel
             {
-                CategoryId = c.CatId,
+                CatId = c.CatId,
                 CategoryName = c.CatName
             });
         }
