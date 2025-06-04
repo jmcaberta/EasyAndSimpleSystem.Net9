@@ -37,23 +37,23 @@
         <v-card :subtitle="`${isEditing ? 'Update' : 'Create'} a product`" :title="`${isEditing ? 'Edit' : 'Add'} Product`">
             <template v-slot:text>
                 <v-row>
-                    <v-col cols="8" md="6">
+                    <v-col cols="6" md="6">
                         <v-text-field v-model="record.articleId" label="Product Id"></v-text-field>
                     </v-col>
-                    <v-col cols="12" md="8">
-                        <v-text-field v-model="record.catId" label="Category"></v-text-field>
+                    <v-col cols="6" md="6">
+                        <v-select v-model="record.catId" :items="category" item-title="text" item-value="value" label="Select category"></v-select>
                     </v-col>
                     <v-col cols="8" md="6">
                         <v-text-field v-model="record.artCode" label="Product code"></v-text-field>
                     </v-col>
-                    <v-col cols="12" md="8">
+                    <v-col cols="12" md="12">
                         <v-text-field v-model="record.artName" label="Name"></v-text-field>
                     </v-col>
-                    <v-col cols="6" md="4">
-                        <v-text-field v-model="record.sellPrice" label="Price"></v-text-field>
+                    <v-col cols="6" md="6">
+                        <v-text-field type="number" v-model="record.sellPrice" label="Price"></v-text-field>
                     </v-col>
-                    <v-col cols="6" md="4">
-                        <v-text-field v-model="record.itemCount" label="Stock"></v-text-field>
+                    <v-col cols="6" md="6">
+                        <v-text-field type="number" v-model="record.itemCount" label="Stock"></v-text-field>
                     </v-col> 
                     <v-col cols="12" md="12">
                         <v-text-field v-model="record.artDescription" label="Description"></v-text-field>
@@ -86,6 +86,7 @@ export default {
     data(){
         const adapter = useDate()
         return{
+            categoryOption: [],
             articles: [],
             adapter,
             DEFAULT_RECORD: { articleId: null, catId: null, artCode: '', artName: '', sellPrice: null, itemCount: null, artDescription: '', isActive: true },
@@ -107,11 +108,13 @@ export default {
             snackbar: false,
             snackbarText: '',
             snackbarColor: 'success',
-            loading: false
+            loading: false,
+            category: []
         }
     },
     mounted() {
         this.list()
+        this.loadCategories()
     },
     methods: {
         list() {
@@ -169,6 +172,17 @@ export default {
                 })
             }
             this.dialog = false
+        },
+        loadCategories(){            
+            axios.get('api/Category/Select').then(response => {
+                this.category = response.data.map(c => ({
+                    text: c.categoryName,
+                    value: c.catId
+                }))
+            })               
+            .catch(function(error){
+                console.log(error)
+            })
         }
     }
 }
