@@ -41,7 +41,7 @@
                         <v-text-field v-model="record.articleId" label="Product Id"></v-text-field>
                     </v-col>
                     <v-col cols="6" md="6">
-                        <v-select v-model="record.catId" :items="category" item-title="text" item-value="value" label="Select category"></v-select>
+                        <v-select v-model="record.categoryName" :items="category" item-title="text" item-value="value" label="Select category"></v-select>
                     </v-col>
                     <v-col cols="8" md="6">
                         <v-text-field v-model="record.artCode" label="Product code"></v-text-field>
@@ -89,10 +89,9 @@ export default {
             categoryOption: [],
             articles: [],
             adapter,
-            DEFAULT_RECORD: { articleId: null, catId: null, artCode: '', artName: '', sellPrice: null, itemCount: null, artDescription: '', isActive: true },
-            record: { articleId: null, catId: null, artCode: '', artName: '', sellPrice: null, itemCount: null, artDescription: '', isActive: true },
-            dialog: false,
-            isEditing: false,
+            //DEFAULT_RECORD: { articleId: null, catId: null, artCode: '', artName: '', sellPrice: null, itemCount: null, artDescription: '', isActive: true },
+            //record: { articleId: null, catId: null, artCode: '', artName: '', sellPrice: null, itemCount: null, artDescription: '', isActive: true },
+            dialog: false,            
             headers: [
                 { title: 'Id', value: 'articleId' },
                 { title: 'Category', value: 'categoryName'},
@@ -104,12 +103,19 @@ export default {
                 { title: 'Active', value: 'isActive' },
                 { title: 'Actions', value: 'actions', sortable: false }
             ],
+            isEditing: false,
             search: '',
             snackbar: false,
             snackbarText: '',
             snackbarColor: 'success',
             loading: false,
-            category: []
+            category: [],
+            artCode: '',
+            artName: '',
+            itemCount: 0,
+            sellPrice: 0,
+            artDescription: '',
+            valida: 0
         }
     },
     mounted() {
@@ -152,9 +158,21 @@ export default {
             }
         },
         save() {
+            if (this.validate()){
+                return
+            }
             this.record.isActive = this.record.isActive === true || this.record.isActive === 'true'
             if (this.isEditing) {
-                axios.put('api/Article/Update', this.record).then(() => {
+                axios.put('api/Article/Update', {
+                    'articleId': this.articleId,
+                    'catId': this.catId,
+                    'artCode': this.artCode,
+                    'arName': this.artName,
+                    'sellPrice': this.sellPrice,
+                    'itemCount': this.itemCount,
+                    'artDescription': this.artDescription,
+                    'isActive': this.isActive
+                } ,this.record).then(() => {
                     this.list()
                     this.dialog = false
                     this.snackbarText = 'Product updated successfully'
@@ -183,7 +201,39 @@ export default {
             .catch(function(error){
                 console.log(error)
             })
+        },
+        validate() {
+            this.valida = 0
+            this.validateMessage = []
+
+            if (this.artName.length < 5 || this.artName.length > 50) {
+                this.validateMessage.push("The product name must be longer than 5 characters and shorter than 50 characters.")
+            }
+            if (!this.catId) {
+                this.validateMessage.push("Select a category.")
+            }
+            if (!this.itemCount || this.itemCount == 0) {
+                this.validateMessage.push("Stock quantity is required.")
+            }
+            if (!this.sellPrice || this.sellPrice == 0) {
+                this.validateMessage.push("The price must be greater than zero. ")
+            }
+            if  (this.validateMessage.length) {
+                this.valida = 1
+            }
+            return this.valida
+        },
+        clean() {
+            this.articleId = ""
+            this.catId = null
+            this.artCode = ""
+            this.artName = ""
+            this.sellPrice = null
+            this.itemCount = null
+            this.artDescription = ""
+            this.isActive = false
         }
+        
     }
 }
 </script>
