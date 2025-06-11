@@ -16,7 +16,7 @@ public class UpdateViewModel
     [Required]
     public int ArticleId { get => _articleId; set => _articleId = value; }
     [Required]
-    public int CatId { get => _catId; private set => _catId = value; }
+    public int CatId { get => _catId;  set => _catId = value; }
     [Required]
     public string ArtCode { get => _artCode; set => _artCode = value; }
     
