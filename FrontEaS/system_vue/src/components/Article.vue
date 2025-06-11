@@ -41,7 +41,7 @@
                         <v-text-field v-model="record.articleId" label="Product Id"></v-text-field>
                     </v-col>
                     <v-col cols="6" md="6">
-                        <v-select v-model="record.categoryName" :items="category" item-title="text" item-value="value" label="Select category"></v-select>
+                        <v-select v-model="record.catId" :items="category" item-title="text" item-value="value" label="Select category"></v-select>
                     </v-col>
                     <v-col cols="8" md="6">
                         <v-text-field v-model="record.artCode" label="Product code"></v-text-field>
@@ -59,7 +59,7 @@
                         <v-text-field v-model="record.artDescription" label="Description"></v-text-field>
                     </v-col>
                     <v-col cols="8" md="6">
-                        <v-switch v-model="record.isActive" label="Active"></v-switch>
+                        <v-switch v-model="record.isActive" label="isActive"></v-switch>
                     </v-col>                       
                 </v-row>
             </template>
@@ -76,21 +76,20 @@
     <v-snackbar v-model="snackbar" :color="snackbarColor" timeout="3000">
         {{ snackbarText }}
     </v-snackbar>
+    <v-alert v-if="validateMessage.length" type="error" dense>
+        <div v-for="(msg, index) in validateMessage" :key="index"> {{ msg }}</div>
+    </v-alert>
 </template>
 <script>
-import { onMounted, ref, shallowRef } from 'vue'
-import { useDate } from 'vuetify'
+import { ref } from 'vue'
 import axios from 'axios'
 
 export default {
     data(){
-        const adapter = useDate()
         return{
-            categoryOption: [],
             articles: [],
-            adapter,
-            //DEFAULT_RECORD: { articleId: null, catId: null, artCode: '', artName: '', sellPrice: null, itemCount: null, artDescription: '', isActive: true },
-            //record: { articleId: null, catId: null, artCode: '', artName: '', sellPrice: null, itemCount: null, artDescription: '', isActive: true },
+            DEFAULT_RECORD: { articleId: null, catId: null, artCode: '', artName: '', sellPrice: null, itemCount: null, artDescription: '', isActive: true },
+            record: { articleId: null, catId: null, artCode: '', artName: '', sellPrice: null, itemCount: null, artDescription: '', isActive: true },
             dialog: false,            
             headers: [
                 { title: 'Id', value: 'articleId' },
@@ -110,12 +109,8 @@ export default {
             snackbarColor: 'success',
             loading: false,
             category: [],
-            artCode: '',
-            artName: '',
-            itemCount: 0,
-            sellPrice: 0,
-            artDescription: '',
-            valida: 0
+            valida: 0,
+            validateMessage: []
         }
     },
     mounted() {
@@ -126,24 +121,29 @@ export default {
         list() {
             axios.get('api/Article/Listing').then((response) => {
                 this.articles = response.data.map(art => ({
-                    ...art,
-                    isActive: art.isActive === true || art.isActive === 'true'
+                    ...art,                    
+                    isActive: Boolean(art.isActive) //isActive: art.isActive === true || art.isActive === 'true'
                 }))
             }).catch((error) => {
                 console.log(error)
             })
         },
         add() {
-            this.isActive = false
+            this.isEditing = false
             this.record = { ...this.DEFAULT_RECORD }
             this.dialog = true
         },
         edit(id) {
             this.isEditing = true
             const found = this.articles.find(art => art.articleId === id)
+            if (!found) {
+                this.snackbarText = 'Product not found'
+                this.snackbarColor = 'error'
+                this.snackbar = true
+                return
+            }
             this.record = {
-                ...found,
-                isActive: found.isActive === true || found.isActive === 'true'
+                ...found, isActive: Boolean(found.isActive) //isActive: found.isActive === true || found.isActive === 'true'
             }
             this.dialog = true
         },
@@ -159,37 +159,28 @@ export default {
         },
         save() {
             if (this.validate()){
+                this.snackbarText = this.validateMessage.join('\n')
+                this.snackbarColor = 'error'
+                this.snackbar = true
                 return
             }
-            this.record.isActive = this.record.isActive === true || this.record.isActive === 'true'
-            if (this.isEditing) {
-                axios.put('api/Article/Update', {
-                    'articleId': this.articleId,
-                    'catId': this.catId,
-                    'artCode': this.artCode,
-                    'arName': this.artName,
-                    'sellPrice': this.sellPrice,
-                    'itemCount': this.itemCount,
-                    'artDescription': this.artDescription,
-                    'isActive': this.isActive
-                } ,this.record).then(() => {
-                    this.list()
-                    this.dialog = false
-                    this.snackbarText = 'Product updated successfully'
-                    this.snackbarColor = 'success'
-                    this.snackbar = true
-                }).catch(error => {
-                    console.log(error)
-                })
-            } else {
-                axios.post('api/Article/Create', this.record).then(() => {
-                    this.list()
-                    this.dialog = false                    
-                }).catch(error => {
-                    console.log(error)
-                })
-            }
-            this.dialog = false
+            this.record.isActive = Boolean(this.record.isActive) //this.record.isActive = this.record.isActive === true || this.record.isActive === 'true'
+            const request = this.isEditing
+                ? axios.put('api/Article/Update', this.record)
+                : axios.post('api/Article/Create', this.record)
+
+            request.then(() => {
+                this.list()
+                this.dialog = false
+                this.snackbarText = this.isEditing ? 'Product updated successfully' : 'Product created successfully'
+                this.snackbarColor = 'success'
+                this.snackbar = true
+            }).catch(error => {
+                console.log(error)
+                this.snackbarText = 'Error saving product'
+                this.snackbarColor = 'error'
+                this.snackbar = true
+            })
         },
         loadCategories(){            
             axios.get('api/Category/Select').then(response => {
@@ -206,34 +197,23 @@ export default {
             this.valida = 0
             this.validateMessage = []
 
-            if (this.artName.length < 5 || this.artName.length > 50) {
+            if (this.record.artName.length < 5 || this.record.artName.length > 50) {
                 this.validateMessage.push("The product name must be longer than 5 characters and shorter than 50 characters.")
             }
-            if (!this.catId) {
+            if (!this.record.catId) {
                 this.validateMessage.push("Select a category.")
             }
-            if (!this.itemCount || this.itemCount == 0) {
+            if (!this.record.itemCount || this.record.itemCount == 0) {
                 this.validateMessage.push("Stock quantity is required.")
             }
-            if (!this.sellPrice || this.sellPrice == 0) {
-                this.validateMessage.push("The price must be greater than zero. ")
+            if (!this.record.sellPrice || this.record.sellPrice == 0) {
+                this.validateMessage.push("The price must be greater than zero.")
             }
             if  (this.validateMessage.length) {
                 this.valida = 1
             }
             return this.valida
-        },
-        clean() {
-            this.articleId = ""
-            this.catId = null
-            this.artCode = ""
-            this.artName = ""
-            this.sellPrice = null
-            this.itemCount = null
-            this.artDescription = ""
-            this.isActive = false
-        }
-        
+        }       
     }
 }
 </script>
